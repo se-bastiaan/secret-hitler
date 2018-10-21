@@ -11,10 +11,10 @@ import {
 	updateGameInfo,
 	updateUserList,
 	updateGeneralChats,
-	updateVersion,
 	fetchProfile,
 	fetchReplay
 } from '../actions/actions.js';
+import * as versionActions from '../actions/version';
 import socket from '../socket';
 import PropTypes from 'prop-types';
 import RightSidebar from './section-right/RightSidebar.jsx';
@@ -69,12 +69,10 @@ export class App extends React.Component {
 		this.handleSeatingUser = this.handleSeatingUser.bind(this);
 		this.handleLeaveGame = this.handleLeaveGame.bind(this);
 		this.makeQuickDefault = this.makeQuickDefault.bind(this);
-		this.changeNotesValue = this.changeNotesValue.bind(this);
 		this.changePlayerNotesValue = this.changePlayerNotesValue.bind(this);
 		this.touConfirmButton = this.touConfirmButton.bind(this);
 
 		this.state = {
-			notesValue: '',
 			playerNotesValue: '',
 			alertMsg: {
 				type: null,
@@ -160,7 +158,7 @@ export class App extends React.Component {
 		});
 
 		socket.on('version', v => {
-			dispatch(updateVersion(v));
+			dispatch(versionActions.updateVersion(v));
 		});
 
 		socket.on('joinGameRedirect', uid => {
@@ -368,12 +366,6 @@ export class App extends React.Component {
 		});
 	}
 
-	changeNotesValue(value) {
-		this.setState({
-			notesValue: value
-		});
-	}
-
 	changePlayerNotesValue(value) {
 		this.setState({
 			playerNotesValue: value
@@ -404,7 +396,7 @@ export class App extends React.Component {
 							: '"Comfortaa", Lato, sans-serif'
 					}}
 				>
-					{this.props.notesActive && <Gamenotes value={this.state.notesValue} changeNotesValue={this.changeNotesValue} />}
+					<Gamenotes />
 
 					{this.props.playerNotesActive && (
 						<Playernotes

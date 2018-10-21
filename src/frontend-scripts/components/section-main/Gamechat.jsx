@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import $ from 'jquery';
 import { PLAYERCOLORS } from '../../constants';
-import { loadReplay, toggleNotes, updateUser } from '../../actions/actions';
+import { loadReplay, updateUser } from '../../actions/actions';
+import * as notesActions from '../../actions/notes';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { renderEmotesButton, processEmotes } from '../../emotes';
@@ -10,11 +11,16 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 const mapDispatchToProps = dispatch => ({
 	loadReplay: summary => dispatch(loadReplay(summary)),
-	toggleNotes: notesStatus => dispatch(toggleNotes(notesStatus)),
+	toggleNotes: (visible) => dispatch(visible ? notesActions.show() : notesActions.hide()),
 	updateUser: userInfo => dispatch(updateUser(userInfo))
 });
 
-const mapStateToProps = ({ notesActive }) => ({ notesActive });
+const mapStateToProps = ({ notes }) => {
+	console.log(notes);
+	return {
+		notesVisible: notes.visible,
+	};
+};
 
 class Gamechat extends React.Component {
 	constructor() {
@@ -107,9 +113,9 @@ class Gamechat extends React.Component {
 	}
 
 	handleNoteClick() {
-		const { notesActive, toggleNotes } = this.props;
+		const { notesVisible, toggleNotes } = this.props;
 
-		toggleNotes(!notesActive);
+		toggleNotes(!notesVisible);
 	}
 
 	handleClickedLeaveGame() {
@@ -615,7 +621,7 @@ class Gamechat extends React.Component {
 					{userInfo.userName && (
 						<i
 							title="Click here to pop out notes"
-							className={this.props.notesActive ? 'large window minus icon' : 'large edit icon'}
+							className={this.props.notesVisible ? 'large window minus icon' : 'large edit icon'}
 							onClick={this.handleNoteClick}
 						/>
 					)}
@@ -946,7 +952,7 @@ Gamechat.propTypes = {
 	socket: PropTypes.object,
 	userList: PropTypes.object,
 	allEmotes: PropTypes.array,
-	notesActive: PropTypes.bool.isRequired,
+	notesVisible: PropTypes.bool.isRequired,
 	toggleNotes: PropTypes.func.isRequired,
 	updateUser: PropTypes.func.isRequired,
 	loadReplay: PropTypes.func.isRequired,

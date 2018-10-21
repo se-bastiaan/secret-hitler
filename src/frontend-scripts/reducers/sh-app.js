@@ -1,16 +1,14 @@
-import { combineReducers } from 'redux';
 import {
-	UPDATE_USER,
-	UPDATE_MIDSECTION,
-	UPDATE_GAMELIST,
+	TOGGLE_PLAYER_NOTES,
 	UPDATE_GAMEINFO,
-	UPDATE_USERLIST,
+	UPDATE_GAMELIST,
 	UPDATE_GENERALCHATS,
-	TOGGLE_NOTES,
-	TOGGLE_PLAYER_NOTES
+	UPDATE_MIDSECTION,
+	UPDATE_USER,
+	UPDATE_USERLIST
 } from '../actions/actions.js';
 
-const userInfo = (state = {}, action) => {
+export const userInfo = (state = {}, action) => {
 	switch (action.type) {
 		case UPDATE_USER:
 			state = action.user;
@@ -19,7 +17,7 @@ const userInfo = (state = {}, action) => {
 	return state;
 };
 
-const midSection = (state = 'default', action) => {
+export const midSection = (state = 'default', action) => {
 	switch (action.type) {
 		case UPDATE_MIDSECTION:
 			state = action.midSection;
@@ -28,16 +26,7 @@ const midSection = (state = 'default', action) => {
 	return state;
 };
 
-const notesActive = (state = false, action) => {
-	switch (action.type) {
-		case TOGGLE_NOTES:
-			state = action.notesShown;
-			break;
-	}
-	return state;
-};
-
-const playerNotesActive = (state = '', action) => {
+export const playerNotesActive = (state = '', action) => {
 	switch (action.type) {
 		case TOGGLE_PLAYER_NOTES:
 			state = action.playerName;
@@ -46,7 +35,7 @@ const playerNotesActive = (state = '', action) => {
 	return state;
 };
 
-const gameList = (state = [], action) => {
+export const gameList = (state = [], action) => {
 	switch (action.type) {
 		case UPDATE_GAMELIST:
 			state = action.gameList;
@@ -55,7 +44,7 @@ const gameList = (state = [], action) => {
 	return state;
 };
 
-const gameInfo = (state = {}, action) => {
+export const gameInfo = (state = {}, action) => {
 	switch (action.type) {
 		case UPDATE_GAMEINFO:
 			state = action.gameInfo;
@@ -64,7 +53,7 @@ const gameInfo = (state = {}, action) => {
 	return state;
 };
 
-const userList = (state = {}, action) => {
+export const userList = (state = {}, action) => {
 	switch (action.type) {
 		case UPDATE_USERLIST:
 			state = action.userList;
@@ -73,7 +62,7 @@ const userList = (state = {}, action) => {
 	return state;
 };
 
-const generalChats = (state = {}, action) => {
+export const generalChats = (state = {}, action) => {
 	switch (action.type) {
 		case UPDATE_GENERALCHATS:
 			state = action.info;
@@ -82,7 +71,7 @@ const generalChats = (state = {}, action) => {
 	return state;
 };
 
-const profile = (state = { status: 'INITIAL' }, action) => {
+export const profile = (state = { status: 'INITIAL' }, action) => {
 	switch (action.type) {
 		case 'REQUEST_PROFILE':
 			return { status: 'LOADING' };
@@ -100,18 +89,7 @@ const profile = (state = { status: 'INITIAL' }, action) => {
 	}
 };
 
-const version = (state = { current: { number: '', color: '', date: '' }, lastSeen: '' }, action) => {
-	switch (action.type) {
-		case 'UPDATE_VERSION':
-			return action.version;
-		case 'VIEW_PATCH_NOTES':
-			return Object.assign({}, state, { lastSeen: state.current.number });
-		default:
-			return state;
-	}
-};
-
-const replay = (state = { status: 'INITIAL' }, action) => {
+export const replay = (state = { status: 'INITIAL' }, action) => {
 	switch (action.type) {
 		case 'CLEAR_REPLAY':
 			return { status: 'INITIAL' };
@@ -134,17 +112,3 @@ const replay = (state = { status: 'INITIAL' }, action) => {
 			return state;
 	}
 };
-
-export default combineReducers({
-	userInfo,
-	midSection,
-	gameList,
-	gameInfo,
-	userList,
-	generalChats,
-	profile,
-	replay,
-	version,
-	notesActive,
-	playerNotesActive
-});

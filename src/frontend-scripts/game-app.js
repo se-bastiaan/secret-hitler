@@ -9,7 +9,7 @@ import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
 import AppComponent from './components/App.jsx';
 import account from './account';
-import shapp from './reducers/sh-app';
+import reducers from './reducers';
 import polyfills from '../../iso/polyfills.js';
 import rootSaga from './sagas';
 
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	if (container) {
 		const sagaMiddleware = createSagaMiddleware();
-		const store = createStore(shapp, applyMiddleware(sagaMiddleware));
+		const store = createStore(reducers, applyMiddleware(sagaMiddleware));
 		sagaMiddleware.run(rootSaga);
 		render(
 			<Provider store={store}>

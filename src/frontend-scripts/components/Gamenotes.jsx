@@ -1,10 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleNotes } from '../actions/actions';
+import * as notesActions from '../actions/notes';
 import PropTypes from 'prop-types';
 
 const mapDispatchToProps = dispatch => ({
-	dismissNotes: () => dispatch(toggleNotes(false))
+	dismissNotes: () => dispatch(notesActions.hide()),
+	clearNotes: () => dispatch(notesActions.clear()),
+	setNotes: (value) => dispatch(notesActions.set(value))
+});
+
+const mapStateToProps = ({ notes }) => ({
+	value: notes.value,
+	visible: notes.visible,
 });
 
 class Gamenotes extends React.Component {
@@ -57,8 +64,12 @@ class Gamenotes extends React.Component {
 	}
 
 	render() {
-		const { changeNotesValue, dismissNotes, value } = this.props;
+		const { clearNotes, setNotes, dismissNotes, value, visible } = this.props;
 		const { left: sectionLeft, top: sectionTop, height: sectionHeight, width: sectionWidth } = this.state;
+
+		if (!visible) {
+			return null;
+		}
 
 		return (
 			<section
@@ -70,12 +81,12 @@ class Gamenotes extends React.Component {
 				<div className="notes-header">
 					<p>Game Notes</p>
 					<div className="icon-container">
-						<i className="large ban icon" onClick={() => changeNotesValue('')} title="Click here to clear notes" />
-						<i className="large window minus icon" onClick={() => dismissNotes(false)} title="Click here to collapse notes" />
+						<i className="large ban icon" onClick={() => clearNotes()} title="Click here to clear notes" />
+						<i className="large window minus icon" onClick={() => dismissNotes()} title="Click here to collapse notes" />
 					</div>
 				</div>
-				<textarea style={{ height: this.state.height }} autoFocus spellCheck="false" value={value}
-									onChange={(e) => changeNotesValue(e.target.value)} />
+				<textarea style={{ height: sectionHeight }} autoFocus spellCheck="false" value={value}
+									onChange={(e) => setNotes(e.target.value)} />
 			</section>
 		);
 	}
@@ -86,12 +97,13 @@ Gamenotes.defaultProps = {
 };
 
 Gamenotes.propTypes = {
-	changeNotesValue: PropTypes.func.isRequired,
+	setNotes: PropTypes.func.isRequired,
+	clearNotes: PropTypes.func.isRequired,
 	dismissNotes: PropTypes.func.isRequired,
 	value: PropTypes.string
 };
 
 export default connect(
-	() => ({}),
+	mapStateToProps,
 	mapDispatchToProps
 )(Gamenotes);

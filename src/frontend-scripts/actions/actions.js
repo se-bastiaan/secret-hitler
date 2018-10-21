@@ -16,15 +16,6 @@ export function updateMidsection(midSection) {
 	};
 }
 
-export const TOGGLE_NOTES = 'TOGGLE_NOTES';
-
-export function toggleNotes(notesShown) {
-	return {
-		type: TOGGLE_NOTES,
-		notesShown
-	};
-}
-
 export const TOGGLE_PLAYER_NOTES = 'TOGGLE_PLAYER_NOTES';
 
 export function togglePlayerNotes(playerName) {
@@ -74,17 +65,6 @@ export const updateActiveStats = activeStat => ({
 	type: 'UPDATE_ACTIVE_STATS',
 	activeStat
 });
-
-export function updateVersion(version) {
-	return {
-		type: 'UPDATE_VERSION',
-		version
-	};
-}
-
-export function viewPatchNotes() {
-	return { type: 'VIEW_PATCH_NOTES' };
-}
 
 export const fetchProfile = (username, requestingUser) => ({
 	type: 'FETCH_PROFILE',
